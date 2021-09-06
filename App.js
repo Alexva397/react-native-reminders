@@ -1,17 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
 import Input from './components/Input';
 import ListItem from './components/ListItem';
 
 export default function App() {
 
   const [reminderList, setReminderList] = useState([]);
+  const [addMode, setAddMode] = useState(false);
 
   const handleUserSubmit = (reminderTitle) => {
     setReminderList(reminders => [
       ...reminders, { id: Math.random().toString(), value: reminderTitle}
     ]);
+    setAddMode(false);
 
   };
 
@@ -22,10 +24,17 @@ export default function App() {
     });
   };
 
+  const cancelInput = () => {
+    setAddMode(false);
+  }
+
   return (
     <View style={styles.viewPort}>
+      <Button title='Add New Goal' onPress={() => setAddMode(true)} />
       <Input 
+        visible={addMode}
         onAdd={handleUserSubmit}
+        onCancel={cancelInput}
       />
 
       {/* <ScrollView>
